@@ -1,8 +1,6 @@
 package dcs
 
 import (
-	"fmt"
-
 	"github.com/VictoriaMetrics/fastcache"
 	"github.com/goalm/lib/utils"
 )
@@ -35,12 +33,7 @@ func LoadTbls() map[string]*fastcache.Cache {
 	tblPaths := utils.Conf.GetStringSlice("tablePaths")
 	for t, file := range tblMap {
 		filePath := utils.GetFile(file, tblPaths)
-		if file == "PREMIUM_COUNTER.fac" {
-			fmt.Println(file, "loading to 2GB cache")
-			m[t] = utils.LoadFacToFastCache(filePath, 1024*1024*2048)
-		} else {
-			m[t] = utils.LoadFacToFastCache(filePath, 1024*1024*32)
-		}
+		m[t] = utils.LoadFacToFastCache(filePath, 1024*1024*2048)
 
 	}
 	return m
