@@ -33,8 +33,8 @@ func LoadTbls() map[string]*fastcache.Cache {
 	tblPaths := utils.Conf.GetStringSlice("tablePaths")
 	for t, file := range tblMap {
 		filePath := utils.GetFile(file, tblPaths)
-		m[t] = utils.LoadFacToFastCache(filePath, 1024*1024*2048)
-
+		//m[t] = utils.LoadFacToFastCache(filePath, 1024*1024*2048)
+		m[t] = utils.LoadFacHashToFastCache(filePath, 1024*1024*2048)
 	}
 	return m
 }

@@ -1,6 +1,7 @@
 package dcs
 
 import (
+	"encoding/json"
 	"log"
 	"mpp/layout"
 	"reflect"
@@ -70,7 +71,7 @@ func ReadCache(tblName string, idx ...string) string {
 	return string(val)
 }
 */
-
+/*
 func ReadCache(tblName string, idx ...string) string {
 	key := idx[0]
 	for _, v := range idx[1:] {
@@ -84,6 +85,27 @@ func ReadCache(tblName string, idx ...string) string {
 	val := tbl.Get(nil, []byte(key))
 
 	return string(val)
+}
+*/
+
+func ReadCache(tblName string, idx ...string) string {
+	key := idx[0]
+	for _, v := range idx[1 : len(idx)-1] {
+		key = key + ":" + v
+	}
+
+	tbl, ok := Tables[tblName]
+	if !ok {
+		log.Printf("table %s not loaded\n", tblName)
+	}
+	val := tbl.Get(nil, []byte(key))
+
+	var m map[string]string
+	if err := json.Unmarshal(val, &m); err != nil {
+		log.Println(tblName, err)
+		return ""
+	}
+	return m[idx[len(idx)-1]]
 }
 
 func ReadCacheInt(tblName string, idx ...string) int {
