@@ -1,12 +1,13 @@
 package dcs
 
 import (
-	"github.com/VictoriaMetrics/fastcache"
 	"github.com/goalm/lib/utils"
 )
 
-var Tables = make(map[string]*fastcache.Cache)
-var Enums = make(map[string]*utils.Enum)
+var (
+	Tables = make(map[string]*utils.TblCache)
+	Enums  = make(map[string]*utils.Enum)
+)
 
 func init() {
 	Tables = LoadTbls()
@@ -27,14 +28,14 @@ func LoadTbls() map[string]*bigcache.BigCache {
 */
 
 // fastcache
-func LoadTbls() map[string]*fastcache.Cache {
-	m := make(map[string]*fastcache.Cache)
+func LoadTbls() map[string]*utils.TblCache {
+	m := make(map[string]*utils.TblCache)
 	tblMap := utils.Conf.GetStringMapString("tableMaps")
 	tblPaths := utils.Conf.GetStringSlice("tablePaths")
 	for t, file := range tblMap {
 		filePath := utils.GetFile(file, tblPaths)
-		//m[t] = utils.LoadFacToFastCache(filePath, 1024*1024*2048)
-		m[t] = utils.LoadFacHashToFastCache(filePath, 1024*1024*2048)
+		// m[t] = utils.LoadFacToFastCache(filePath, 1024*1024*2048)
+		m[t] = utils.LoadFacToTblCache(filePath, 1024*1024*2048)
 	}
 	return m
 }

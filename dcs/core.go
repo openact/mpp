@@ -1,13 +1,14 @@
 package dcs
 
 import (
-	"encoding/json"
 	"log"
 	"mpp/layout"
 	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/goalm/lib/utils"
+	"github.com/samber/lo"
 )
 
 func PopulateInputFields(in *layout.MpData) {
@@ -33,61 +34,6 @@ func PopulateInputFields(in *layout.MpData) {
 	}
 }
 
-// todo: 9999 -> nil
-/*
-func ReadCache(tblName string, idx ...string) string {
-	key := idx[0]
-	for _, v := range idx[1:] {
-		key = key + ":" + v
-	}
-
-	tbl, ok := Tables[tblName]
-	if !ok {
-		log.Printf("table %s not loaded\n", tblName)
-	}
-	val, ok := tbl[key]
-	if !ok {
-		//log.Printf("key %s not found in table %s, 9999 is used instead. \n", key, tblName)
-		return "0"
-	}
-	return val
-}
-*/
-/* big cache
-func ReadCache(tblName string, idx ...string) string {
-	key := idx[0]
-	for _, v := range idx[1:] {
-		key = key + ":" + v
-	}
-
-	tbl, ok := Tables[tblName]
-	if !ok {
-		log.Printf("table %s not loaded\n", tblName)
-	}
-	val, err := tbl.Get(key)
-	if err != nil {
-		log.Println(err)
-	}
-	return string(val)
-}
-*/
-/*
-func ReadCache(tblName string, idx ...string) string {
-	key := idx[0]
-	for _, v := range idx[1:] {
-		key = key + ":" + v
-	}
-
-	tbl, ok := Tables[tblName]
-	if !ok {
-		log.Printf("table %s not loaded\n", tblName)
-	}
-	val := tbl.Get(nil, []byte(key))
-
-	return string(val)
-}
-*/
-
 func ReadCache(tblName string, idx ...string) string {
 	key := idx[0]
 	for _, v := range idx[1 : len(idx)-1] {
@@ -96,16 +42,24 @@ func ReadCache(tblName string, idx ...string) string {
 
 	tbl, ok := Tables[tblName]
 	if !ok {
-		log.Printf("table %s not loaded\n", tblName)
+		log.Printf("Table %s not loaded\n", tblName)
 	}
-	val := tbl.Get(nil, []byte(key))
+	subKeys := tbl.SubKeys
+	val := tbl.Caches.Get(nil, []byte(key))
+	valStrS := strings.Split(string(val), ",")
 
-	var m map[string]string
-	if err := json.Unmarshal(val, &m); err != nil {
-		log.Println(tblName, err)
+	n := lo.IndexOf(subKeys, idx[len(idx)-1])
+
+	if n == -1 {
+		// log.Printf("Key %s not found in %s\n", idx[len(idx)-1], tblName)
 		return ""
 	}
-	return m[idx[len(idx)-1]]
+
+	if len(valStrS) <= n {
+		return ""
+	}
+
+	return valStrS[n]
 }
 
 func ReadCacheInt(tblName string, idx ...string) int {
@@ -146,11 +100,11 @@ func PopulateStringEnum(in *layout.Input, tgt []string, enum *utils.Enum) {
 	for i := 0; i < enum.Size(); i++ {
 		str, ok := enum.IntToStr(i)
 		if !ok {
-			//log.Printf("enum %s index %v not found", enum.VarName, i)
+			// log.Printf("enum %s index %v not found", enum.VarName, i)
 		} else {
 			val := reflect.ValueOf(in).Elem().FieldByName(str)
 			if !val.IsValid() {
-				//log.Printf("field %s not found, face value %s was used", enum.VarName, str)
+				// log.Printf("field %s not found, face value %s was used", enum.VarName, str)
 				tgt[i] = str
 			} else {
 				tgt[i] = val.String()
@@ -168,11 +122,11 @@ func PopulateIntEnum(in *layout.Input, tgt []int, enum *utils.Enum) {
 	for i := 0; i < enum.Size(); i++ {
 		str, ok := enum.IntToStr(i)
 		if !ok {
-			//log.Printf("enum %s index %v not found", enum.VarName, i)
+			// log.Printf("enum %s index %v not found", enum.VarName, i)
 		} else {
 			val := reflect.ValueOf(in).Elem().FieldByName(str)
 			if !val.IsValid() {
-				//log.Printf("field %s not found, face value %v was used", enum.VarName, str)
+				// log.Printf("field %s not found, face value %v was used", enum.VarName, str)
 				v, err := strconv.Atoi(str)
 				if err != nil {
 					panic(err)
@@ -185,5 +139,5 @@ func PopulateIntEnum(in *layout.Input, tgt []int, enum *utils.Enum) {
 	}
 }
 
-//todo: output can map to input (+-x/)
-//todo: read fac
+// todo: output can map to input (+-x/)
+// todo: read fac
