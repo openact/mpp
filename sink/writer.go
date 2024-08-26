@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/goalm/lib/utils"
+	"github.com/schollz/progressbar/v3"
 )
 
 // todo: dont allow concurrent create files
@@ -30,6 +31,8 @@ func (w *Writer) Write(str string) (n int, err error) {
 	w.mu.Unlock()
 	return
 }
+
+var bar *progressbar.ProgressBar = progressbar.Default(-1, "Processing records")
 
 func RegisterWriter(path string, out *layout.Output) (writer *Writer) {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
@@ -61,10 +64,12 @@ func RegisterWriter(path string, out *layout.Output) (writer *Writer) {
 
 func WriteMp(path string, out *layout.Output) error {
 	w := RegisterWriter(path, out)
-	//w.mu.Lock()
-	//defer w.mu.Unlock()
+	// w.mu.Lock()
+	// defer w.mu.Unlock()
 	// write the record
 	_, err := w.Write(utils.RecordToCsvString(out, "*"))
+
+	bar.Add(1)
 	if err != nil {
 		fmt.Printf("path is %s, value is %v err is %v\n", path, out, err)
 	}
@@ -111,7 +116,7 @@ func WriteMpBufio(path string, out *layout.Output) error {
 	if err != nil {
 		fmt.Printf("path is %s, value is %v err is %v\n", path, out, err)
 	}
-	//bw.file.Flush() flush to be used at the end of the process
+	// bw.file.Flush() flush to be used at the end of the process
 	bw.mu.Unlock()
 	return nil
 }
