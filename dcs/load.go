@@ -1,6 +1,8 @@
 package dcs
 
 import (
+	"sync"
+
 	"github.com/goalm/lib/utils"
 )
 
@@ -13,19 +15,6 @@ func init() {
 	Tables = LoadTbls()
 	Enums = loadEnum()
 }
-
-/* big cache
-func LoadTbls() map[string]*bigcache.BigCache {
-	m := make(map[string]*bigcache.BigCache)
-	tblMap := utils.Conf.GetStringMapString("tableMaps")
-	tblPaths := utils.Conf.GetStringSlice("tablePaths")
-	for t, file := range tblMap {
-		filePath := utils.GetFile(file, tblPaths)
-		m[t] = utils.LoadFacToBigCache(filePath)
-	}
-	return m
-}
-*/
 
 // fastcache
 func LoadTbls() map[string]*utils.TblCache {
@@ -57,4 +46,18 @@ func LocateFiles(files []string, paths []string) []string {
 		s = append(s, path)
 	}
 	return s
+}
+
+// load data files
+func StreamGenericFiles[T any](filePaths []string, row T, dataChn chan *T) {
+	wg := sync.WaitGroup{}
+	for _, filePath := range filePaths {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			utils.StreamGenericCsvFile(filePath, row, dataChn)
+		}()
+	}
+	wg.Wait()
+	close(dataChn)
 }
