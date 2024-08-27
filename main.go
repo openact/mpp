@@ -20,7 +20,7 @@ func main() {
 		}()
 	*/
 
-	//for testing
+	// for testing
 	start := time.Now()
 
 	srcData := utils.Conf.GetStringSlice("data")
@@ -28,9 +28,9 @@ func main() {
 	outPath := utils.Conf.GetString("outPaths.modelPoints")
 	fmt.Println("outPath: ", outPath)
 	in := make(chan *layout.Input)
-	//go producer.LoadSrcTbls(srcPaths, in)
-	//go producer.LoadGenericFiles(srcPaths, layout.Input{}, in)
-	go utils.StreamGenericFiles(srcPaths, layout.Input{}, in)
+	// go producer.LoadSrcTbls(srcPaths, in)
+	// go producer.LoadGenericFiles(srcPaths, layout.Input{}, in)
+	go dcs.StreamGenericFiles(srcPaths, layout.Input{}, in)
 
 	fmt.Println("loading data ... used", time.Since(start))
 	utils.InitializePath(outPath)
@@ -39,7 +39,7 @@ func main() {
 
 	stageSinkFn := func(in *layout.MpData) (out *layout.MpData, err error) {
 		err = sink.WriteMp(outPath, in.Output)
-		//err = sink.WriteMpBufio(outPath, in.Output)
+		// err = sink.WriteMpBufio(outPath, in.Output)
 		if err != nil {
 			fmt.Println("error: ", err)
 		}
@@ -62,13 +62,12 @@ func main() {
 		etl.Name("stageSink"))
 
 	err := etl.Do(producer, stage1, stageSink)
-
 	if err != nil {
 		fmt.Println("error: ", err)
 	}
 
 	// sink functions
-	//sink.WriteToMongoDb(outp, "ModelPoints", "test")
+	// sink.WriteToMongoDb(outp, "ModelPoints", "test")
 	if err != nil {
 		fmt.Println("error: ", err)
 	}
