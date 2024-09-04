@@ -30,7 +30,7 @@ func main() {
 	in := make(chan *layout.Input)
 	//go producer.LoadSrcTbls(srcPaths, in)
 	//go producer.LoadGenericFiles(srcPaths, layout.Input{}, in)
-	go utils.StreamGenericFiles(srcPaths, layout.Input{}, in)
+	go dcs.StreamGenericFiles(srcPaths, layout.Input{}, in)
 
 	fmt.Println("loading data ... used", time.Since(start))
 	utils.InitializePath(outPath)

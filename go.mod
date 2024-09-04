@@ -1,11 +1,12 @@
 module mpp
 
-go 1.22.5
+go 1.23.0
 
 require (
 	github.com/goalm/lib v0.0.0-20240711050152-3d53f98e7bb3
 	github.com/jszwec/csvutil v1.10.0
 	github.com/samber/lo v1.47.0
+	github.com/schollz/progressbar/v3 v3.14.6
 )
 
 require (
@@ -29,7 +30,6 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
-	github.com/schollz/progressbar/v3 v3.14.6 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect

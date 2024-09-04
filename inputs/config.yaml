@@ -1,6 +1,6 @@
 # This is the configuration file for the MPP application
 outPaths:
-  modelPoints: outputs/IFRS17
+  modelPoints: C:/appData/PLAI_CAM_DCS_v5_20240603/outputs/v1
 
 sysPaths:
   enums: inputs/enums
@@ -11,7 +11,8 @@ tablePaths:
   - inputs/tables/subfolder2
 
 dataPaths:
-  - inputs/data/PLAI17
+  - C:/appData/PLAI_CAM_DCS_v5_20240603/inputs/data/I17_FULL
+
 
 data:
   - U_BELD.IF_
