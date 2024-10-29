@@ -37,7 +37,6 @@ func main() {
 
 	stageSinkFn := func(in *layout.MpData) (out *layout.MpData, err error) {
 		err = sink.WriteMp(outPath, in.Output)
-		// err = sink.WriteMpBufio(outPath, in.Output)
 		if err != nil {
 			fmt.Println("error: ", err)
 		}

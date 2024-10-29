@@ -378,6 +378,7 @@ type Input struct {
 	CAMP_IND_IF                        float64 `csv:"CAMP_IND_IF,omitempty"`
 	CAMP_IND_NB                        float64 `csv:"CAMP_IND_NB,omitempty"`
 	LOY_BONUS_IND                      int     `csv:"LOY_BONUS_IND,omitempty"`
+	testing                            int     `csv:"testing,omitempty"`
 }
 
 type Output struct {
