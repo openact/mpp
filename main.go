@@ -9,8 +9,8 @@ import (
 
 	//_ "net/http/pprof"
 
-	"github.com/goalm/lib/etl"
-	"github.com/goalm/lib/utils"
+	"github.com/openact/lib/etl"
+	"github.com/openact/lib/utils"
 )
 
 func main() {

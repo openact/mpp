@@ -3,7 +3,7 @@ package dcs
 import (
 	"sync"
 
-	"github.com/goalm/lib/utils"
+	"github.com/openact/lib/utils"
 )
 
 var (

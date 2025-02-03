@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/goalm/lib/utils"
+	"github.com/openact/lib/utils"
 
 	"github.com/jszwec/csvutil"
 )

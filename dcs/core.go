@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/goalm/lib/utils"
+	"github.com/openact/lib/utils"
 	"github.com/samber/lo"
 )
 
@@ -100,11 +100,11 @@ func PopulateStringEnum(in *layout.Input, tgt []string, enum *utils.Enum) {
 	for i := 0; i < enum.Size(); i++ {
 		str, ok := enum.IntToStr(i)
 		if !ok {
-			// log.Printf("enum %s index %v not found", enum.VarName, i)
+			// log.Printf("enum %s index %v not found", enum.Name, i)
 		} else {
 			val := reflect.ValueOf(in).Elem().FieldByName(str)
 			if !val.IsValid() {
-				// log.Printf("field %s not found, face value %s was used", enum.VarName, str)
+				// log.Printf("field %s not found, face value %s was used", enum.Name, str)
 				tgt[i] = str
 			} else {
 				tgt[i] = val.String()
@@ -122,11 +122,11 @@ func PopulateIntEnum(in *layout.Input, tgt []int, enum *utils.Enum) {
 	for i := 0; i < enum.Size(); i++ {
 		str, ok := enum.IntToStr(i)
 		if !ok {
-			// log.Printf("enum %s index %v not found", enum.VarName, i)
+			// log.Printf("enum %s index %v not found", enum.Name, i)
 		} else {
 			val := reflect.ValueOf(in).Elem().FieldByName(str)
 			if !val.IsValid() {
-				// log.Printf("field %s not found, face value %v was used", enum.VarName, str)
+				// log.Printf("field %s not found, face value %v was used", enum.Name, str)
 				v, err := strconv.Atoi(str)
 				if err != nil {
 					panic(err)

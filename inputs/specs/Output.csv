@@ -1,4 +1,4 @@
-VarName,VarType,VarTag,VarDef
+Name,VarType,VarTag,VarDef
 PROD_NAME,string,input,PROD_NAME
 SPCODE,int,input,SPCODE
 POL_NUMBER,int,input,POL_NUMBER

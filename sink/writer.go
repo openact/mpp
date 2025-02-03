@@ -8,7 +8,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/goalm/lib/utils"
+	"github.com/openact/lib/utils"
 	"github.com/schollz/progressbar/v3"
 )
 

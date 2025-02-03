@@ -1,9 +1,9 @@
 module mpp
 
-go 1.23.0
+go 1.23.5
 
 require (
-	github.com/goalm/lib v0.0.0-20240711050152-3d53f98e7bb3
+	github.com/openact/lib v0.0.0-20240711050152-3d53f98e7bb3
 	github.com/jszwec/csvutil v1.10.0
 	github.com/samber/lo v1.47.0
 	github.com/schollz/progressbar/v3 v3.14.6

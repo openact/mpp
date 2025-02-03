@@ -1,4 +1,4 @@
-VarName,VarType,VarTag,OmitEmpty
+Name,VarType,VarTag,OmitEmpty
 SPCODE,int,SPCODE,1
 POL_NUMBER,int,POL_NUMBER,1
 AGE_AT_ENTRY,int,AGE_AT_ENTRY,1
